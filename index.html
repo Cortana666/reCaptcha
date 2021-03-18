@@ -1,0 +1,47 @@
+<html>
+
+<head>
+    <title>reCAPTCHA demo: Explicit render after an onload callback</title>
+    <script type="text/javascript">
+        var onloadCallback = function () {
+            grecaptcha.render('html_element', {
+                'sitekey': 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                'callback': 'checkResponse'
+            });
+        };
+
+        var checkResponse = function () {
+            $.ajax({
+                'url': 'index.php',
+                'type': 'post',
+                'dataType': 'json',
+                'data': {
+                    'g-recaptcha-response': grecaptcha.getResponse()
+                },
+                success(res) {
+                    if (res.status) {
+                        if (res.status == 1) {
+                            $("input[type='submit']").prop('disabled', false);
+                        } else {
+                            alert('验证错误！');
+                        }
+                    } else {
+                        alert('请求错误！');
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <form action="index.php" method="POST">
+        <div id="html_element"></div>
+        <br>
+        <input type="submit" value="Submit" disabled>
+    </form>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</body>
+
+</html>
