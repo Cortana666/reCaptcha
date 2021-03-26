@@ -1,9 +1,9 @@
 <?php
     require_once 'Recaptcha.php';
-    $oRecaptcha = new Recaptcha();
-    $oRecaptcha->sGRecaptchaResponse = $_POST['g-recaptcha-response'];
-    $oRecaptcha->sSecret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+    $aConfig['g-recaptcha-response'] = $_POST['g-recaptcha-response'];
+    $aConfig['secret'] = "xxxxxxxxxx";
+    $oRecaptcha = new Recaptcha($aConfig);
     $res = $oRecaptcha->check();
-    echo $res;
+    echo json_encode($res);
     exit;
 ?>
